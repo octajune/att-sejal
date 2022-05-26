@@ -1,0 +1,516 @@
+<app-auth-navbar></app-auth-navbar>
+<main>
+  <div
+    class="relative pt-16 pb-32 flex content-center items-center justify-center min-h-screen-75"
+  >
+    <div
+      class="absolute top-0 w-full h-full bg-center bg-cover"
+      style="
+        background-image: url('https://www.nec.com/en/global/solutions/biometrics/img/face/face_header_sd.jpg');
+      "
+    >
+      <span
+        class="w-full h-full absolute opacity-75 bg-black"
+        id="blackOverlay"
+      ></span>
+    </div>
+    <div class="container relative mx-auto">
+      <div class="items-center flex flex-wrap">
+        <div class="w-full lg:w-6/12 px-4 ml-auto mr-auto text-center content-center">
+          <div class="pr-12">
+            <h1 class="text-white font-semibold text-5xl">
+              Smart Attendance
+            </h1>
+            <p class="mt-4 text-lg text-blueGray-200">
+              To keep every student on check!
+            </p>
+          </div>
+          <div class="sm:block flex flex-col mt-10 ">
+            <a
+              class="text-white font-bold px-6 py-4 mr-1 mb-2 rounded outline-none focus:outline-none bg-red-600 active:bg-red-700 uppercase text-sm shadow hover:shadow-lg ease-linear transition-all duration-150"
+              href="auth/register"
+            >
+              Create an account
+            </a>
+            <a
+              class="sm:ml-2 text-white font-bold px-6 py-4 rounded outline-none focus:outline-none mr-1 mb-2 bg-blueGray-700 active:bg-blueGray-600 uppercase text-sm shadow hover:shadow-lg ease-linear transition-all duration-150"
+              href="auth/login"
+            >
+              <span>Login as existing user</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      class="top-auto bottom-0 left-0 right-0 w-full absolute pointer-events-none overflow-hidden h-70-px"
+      style="transform: translateZ(0)"
+    >
+      <svg
+        class="absolute bottom-0 overflow-hidden"
+        preserveAspectRatio="none"
+        version="1.1"
+        viewBox="0 0 2560 100"
+        x="0"
+        xmlns="http://www.w3.org/2000/svg"
+        y="0"
+      >
+        <polygon
+          class="text-blueGray-200 fill-current"
+          points="2560 0 2560 100 0 100"
+        ></polygon>
+      </svg>
+    </div>
+  </div>
+
+  <section class="pb-20 bg-blueGray-200 -mt-24">
+    <div class="container mx-auto px-4">
+      <div class="flex flex-wrap">
+        <div class="lg:pt-12 pt-6 w-full md:w-4/12 px-4 text-center">
+          <div
+            class="relative flex flex-col min-w-0 break-words bg-white w-full mb-8 shadow-lg rounded-lg"
+          >
+            <div class="px-4 py-5 flex-auto">
+              <div
+                class="text-white p-3 text-center inline-flex items-center justify-center w-12 h-12 mb-5 shadow-lg rounded-full bg-red-400"
+              >
+                <i class="fas fa-award"></i>
+              </div>
+              <h6 class="text-xl font-semibold">Low on cost</h6>
+              <p class="mt-2 mb-4 text-blueGray-500">
+                No extra infrastructure required.<br>
+                Since the whole process will be done
+                by a computer, it means the total attendance
+                registration and calculation will be automated
+                and done by the system itself, therefore,
+                saving us the money.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div class="w-full md:w-4/12 px-4 text-center">
+          <div
+            class="relative flex flex-col min-w-0 break-words bg-white w-full mb-8 shadow-lg rounded-lg"
+          >
+            <div class="px-4 py-5 flex-auto">
+              <div
+                class="text-white p-3 text-center inline-flex items-center justify-center w-12 h-12 mb-5 shadow-lg rounded-full bg-lightBlue-400"
+              >
+                <i class="fas fa-retweet"></i>
+              </div>
+              <h6 class="text-xl font-semibold">Time saving</h6>
+              <p class="mt-2 mb-4 text-blueGray-500">
+                Saves approx 3 hours per day per school.<br>
+                We have created a Face recognition based<br>
+                attendance system which will not only allow <br>
+                you to register the attendance of a person<br>
+                but also keep you at a safe distance.It will help<br>
+                you see who all are attending your sessions.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div class="pt-6 w-full md:w-4/12 px-4 text-center">
+          <div
+            class="relative flex flex-col min-w-0 break-words bg-white w-full mb-8 shadow-lg rounded-lg"
+          >
+            <div class="px-4 py-5 flex-auto">
+              <div
+                class="text-white p-3 text-center inline-flex items-center justify-center w-12 h-12 mb-5 shadow-lg rounded-full bg-emerald-400"
+              >
+                <i class="fas fa-fingerprint"></i>
+              </div>
+              <h6 class="text-xl font-semibold">Easy to manage</h6>
+              <p class="mt-2 mb-4 text-blueGray-500">
+                Since the artificial intelligence based<br>
+                attendance system is fully automated,<br>
+                managing the records and keeping a track of day<br>
+                to day activities will become much easier than<br>
+                the manual system. Everything will be done by<br>
+                the system.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="flex flex-wrap items-center mt-32">
+        <div class="w-full md:w-5/12 px-4 mr-auto ml-auto">
+          <div
+            class="text-blueGray-500 p-3 text-center inline-flex items-center justify-center w-16 h-16 mb-6 shadow-lg rounded-full bg-white"
+          >
+            <i class="fas fa-user-friends text-xl"></i>
+          </div>
+          <h3 class="text-3xl mb-2 font-semibold leading-normal">
+            Hey! I'm Sejal</h3>
+          <p
+            class="text-lg font-light leading-relaxed mt-4 mb-4 text-blueGray-600"
+          >
+            Being an online student, I have seen that
+            attendance marking for our teachers in a
+            classroom during a lecture is not only a
+            onerous task but also a time consuming one.
+            Due to an unusually high number of students
+            present during the lecture there will always
+            be a probability of proxy attendance(s).
+          </p>
+          <p
+            class="text-lg font-light leading-relaxed mt-0 mb-4 text-blueGray-600"
+          >
+            So, with the help of:<br></p>
+          <div class="block pb-111">
+            <a class="text-xs font-semibold inline-block py-1 px-2 uppercase rounded-full text-blueGray-500 bg-white uppercase last:mr-0 mr-2 mt-2"
+               href="https://github.com/octajune/att-sejal/blob/master/CICD.md"
+            >
+              CI/CD - GitHub Actions
+            </a>
+            <a class="text-xs font-semibold inline-block py-1 px-2 uppercase rounded-full text-blueGray-500 bg-white uppercase last:mr-0 mr-2 mt-2"
+               href="https://github.com/octajune/att-sejal/blob/master/Azure.md"
+            >
+              Azure - Azure App Service
+            </a>
+            <a class="text-xs font-semibold inline-block py-1 px-2 uppercase rounded-full text-blueGray-500 bg-white uppercase last:mr-0 mr-2 mt-2"
+               href="https://github.com/octajune/att-sejal/blob/master/Frontend.md"
+            >
+              Angular
+            </a>
+            <a class="text-xs font-semibold inline-block py-1 px-2 uppercase rounded-full text-blueGray-500 bg-white uppercase last:mr-0 mr-2 mt-2"
+               href="https://github.com/octajune/att-sejal/blob/master/Backend.md"
+            >
+              Python Flask APIs
+            </a>
+            <a class="text-xs font-semibold inline-block py-1 px-2 uppercase rounded-full text-blueGray-500 bg-white uppercase last:mr-0 mr-2 mt-2"
+               href="https://github.com/octajune/att-sejal/blob/master/ImageProcessing.md"
+            >
+              Image Processing
+            </a>
+            <a class="text-xs font-semibold inline-block py-1 px-2 uppercase rounded-full text-blueGray-500 bg-white uppercase last:mr-0 mr-2 mt-2"
+               href="https://github.com/octajune/att-sejal/blob/master/DB.md"
+            >
+              Azure Database for PostgreSQL flexible server
+            </a>
+            <a class="text-xs font-semibold inline-block py-1 px-2 uppercase rounded-full text-blueGray-500 bg-white uppercase last:mr-0 mr-2 mt-2"
+               href="https://github.com/octajune/att-sejal/blob/master/Dockerization.md"
+            >
+              Docker based containerization
+            </a>
+            <a class="text-xs font-semibold inline-block py-1 px-2 uppercase rounded-full text-blueGray-500 bg-white uppercase last:mr-0 mr-2 mt-2"
+               href="https://github.com/octajune/att-sejal/blob/master/Authentication.md"
+            >
+              Token based Authentication
+            </a>
+          </div>
+
+          <a [routerLink]="['/']" class="font-bold text-blueGray-700 mt-8"><br>
+            I created this to help her and many more!
+          </a>
+        </div>
+
+        <div class="w-full md:w-4/12 px-4 mr-auto ml-auto">
+          <div
+            class="relative flex flex-col min-w-0 break-words bg-white w-full mb-6 shadow-lg rounded-lg bg-red-600"
+          >
+            <img
+              alt="..."
+              class="w-full align-middle rounded-t-lg"
+              src="https://media.istockphoto.com/vectors/facial-recognition-system-concept-face-recognition-3d-scanning-face-vector-id1124560262?k=20&m=1124560262&s=612x612&w=0&h=LWVhZFTWUrStLv0SCdTJ5cigNnSn33x5pV6dcqOE6k8="
+            />
+            <blockquote class="relative p-8 mb-4">
+              <svg
+                class="absolute left-0 w-full block h-95-px -top-94-px"
+                preserveAspectRatio="none"
+                viewBox="0 0 583 95"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <polygon
+                  class="text-red-600 fill-current"
+                  points="-30,95 583,95 583,65"
+                ></polygon>
+              </svg>
+              <h4 class="text-xl font-bold text-white">Top Notch Application</h4>
+              <p class="text-md font-light mt-2 text-white">
+                The system works on face recognition where each student
+                in the class is photographed, and their details are stored
+                on a server. The teacher can record the attendance automatically
+                in the classroom. The system will recognise the faces and
+                verify the presence or absence of each student.
+              </p>
+            </blockquote>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="relative py-20">
+    <div
+      class="bottom-auto top-0 left-0 right-0 w-full absolute pointer-events-none overflow-hidden -mt-20 h-20"
+      style="transform: translateZ(0)"
+    >
+      <svg
+        class="absolute bottom-0 overflow-hidden"
+        preserveAspectRatio="none"
+        version="1.1"
+        viewBox="0 0 2560 100"
+        x="0"
+        xmlns="http://www.w3.org/2000/svg"
+        y="0"
+      >
+        <polygon
+          class="text-white fill-current"
+          points="2560 0 2560 100 0 100"
+        ></polygon>
+      </svg>
+    </div>
+
+    <div class="container mx-auto px-4">
+      <div class="items-center flex flex-wrap">
+        <div class="w-full md:w-4/12 ml-auto mr-auto px-4">
+          <img
+            alt="..."
+            class="max-w-full rounded-lg shadow-lg"
+            src="https://images.unsplash.com/photo-1555212697-194d092e3b8f?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=634&q=80"
+          />
+        </div>
+        <div class="w-full md:w-5/12 ml-auto mr-auto px-4">
+          <div class="md:pr-12">
+            <div
+              class="text-red-600 p-3 text-center inline-flex items-center justify-center w-16 h-16 mb-6 shadow-lg rounded-full bg-red-300"
+            >
+              <i class="fas fa-rocket text-xl"></i>
+            </div>
+            <h3 class="text-3xl font-semibold">How to use?</h3>
+            <p class="mt-4 text-lg leading-relaxed text-blueGray-500">
+              Only 3 simple steps to follow:<br>
+            </p>
+            <ul class="list-none mt-6">
+              <li class="py-2">
+                <div class="flex items-center">
+                  <div>
+                    <span
+                      class="text-xs font-semibold inline-block py-1 px-2 uppercase rounded-full text-red-600 bg-red-200 mr-3"
+                    >
+                      <i class="fas fa-fingerprint"></i>
+                    </span>
+                  </div>
+                  <div>
+                    <h4 class="text-blueGray-500">
+                      Register yourself
+                    </h4>
+                  </div>
+                </div>
+              </li>
+              <li class="py-2">
+                <div class="flex items-center">
+                  <div>
+                    <span
+                      class="text-xs font-semibold inline-block py-1 px-2 uppercase rounded-full text-red-600 bg-red-200 mr-3"
+                    >
+                      <i class="fab fa-html5"></i>
+                    </span>
+                  </div>
+                  <div>
+                    <h4 class="text-blueGray-500">Provide the detail of your students</h4>
+                  </div>
+                </div>
+              </li>
+              <li class="py-2">
+                <div class="flex items-center">
+                  <div>
+                    <span
+                      class="text-xs font-semibold inline-block py-1 px-2 uppercase rounded-full text-red-600 bg-red-200 mr-3"
+                    >
+                      <i class="far fa-paper-plane"></i>
+                    </span>
+                  </div>
+                  <div>
+                    <h4 class="text-blueGray-500">Provide the link to your class</h4>
+                  </div>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="pt-20 pb-48">
+    <div class="container mx-auto px-4">
+      <div class="flex flex-wrap justify-center text-center mb-24">
+        <div class="w-full lg:w-6/12 px-4">
+          <h2 class="text-4xl font-semibold">Microsoft Engage Submission!</h2>
+          <p class="text-lg leading-relaxed m-4 text-blueGray-500">
+            “I can't be more thankful to Microsoft for offering me this opportunity. I learnt a lot from the past 6
+            weeks”
+            <br>-Sejal<br><br>
+          </p>
+        </div>
+      </div>
+      <div class="flex flex-wrap content-center">
+        <div class="w-full md:w-6/12 lg:w-4/12 lg:mb-0 mb-12 px-4 content-center"></div>
+        <div class="w-full md:w-6/12 lg:w-4/12 lg:mb-0 mb-12 px-4 content-center">
+          <div class="px-6">
+            <img
+              alt="..."
+              class="shadow-lg rounded-full mx-auto max-w-120-px"
+              src="assets/img/sejal.jpeg"
+            />
+            <div class="pt-6 text-center">
+              <h5 class="text-xl font-bold">Sejal</h5>
+              <p class="mt-1 text-sm text-blueGray-400 uppercase font-semibold">
+                Just another girl who loves to code :)
+              </p>
+              <div class="mt-6">
+                <button
+                  class="bg-lightBlue-600 text-white w-8 h-8 rounded-full outline-none focus:outline-none mr-1 mb-1"
+                  type="button"
+                >
+                  <a class="fab fa-linkedin" href="https://www.linkedin.com/in/octajune/"></a>
+                </button>
+                <button
+                  class="bg-black text-white w-8 h-8 rounded-full outline-none focus:outline-none mr-1 mb-1"
+                  type="button"
+                >
+                  <a class="fab fa-github" href="https://www.github.com/octajune/"></a>
+                </button>
+
+                <button
+                  class="bg-pink-500 text-white w-8 h-8 rounded-full outline-none focus:outline-none mr-1 mb-1"
+                  type="button"
+                >
+                  <a class="fab fa-instagram" href="https://www.instagram.com/sejal_tudli/"></a>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="w-full md:w-6/12 lg:w-4/12 lg:mb-0 mb-12 px-4 content-center">
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="pb-20 relative block bg-blueGray-800">
+    <div
+      class="bottom-auto top-0 left-0 right-0 w-full absolute pointer-events-none overflow-hidden -mt-20 h-20"
+      style="transform: translateZ(0)"
+    >
+      <svg
+        class="absolute bottom-0 overflow-hidden"
+        preserveAspectRatio="none"
+        version="1.1"
+        viewBox="0 0 2560 100"
+        x="0"
+        xmlns="http://www.w3.org/2000/svg"
+        y="0"
+      >
+        <polygon
+          class="text-blueGray-800 fill-current"
+          points="2560 0 2560 100 0 100"
+        ></polygon>
+      </svg>
+    </div>
+
+    <div class="container mx-auto px-4 lg:pt-24 lg:pb-64">
+      <div class="flex flex-wrap text-center justify-center">
+        <div class="w-full lg:w-6/12 px-4">
+          <h2 class="text-4xl font-semibold text-white">Beneficial Impacts</h2>
+          <p class="text-lg leading-relaxed mt-4 mb-4 text-blueGray-400">
+            The teacher can record the attendance by just providing the link
+            to the classroom. The system will recognize the faces and verify
+            the presence or absence of each student.
+          </p>
+        </div>
+      </div>
+      <div class="flex flex-wrap mt-12 justify-center">
+        <div class="w-full lg:w-3/12 px-4 text-center">
+          <div
+            class="text-blueGray-800 p-3 w-12 h-12 shadow-lg rounded-full bg-white inline-flex items-center justify-center"
+          >
+            <i class="fas fa-medal text-xl"></i>
+          </div>
+          <h6 class="text-xl mt-5 font-semibold text-white">
+            Tackle proxy attendance
+          </h6>
+          <p class="mt-2 mb-4 text-blueGray-400">
+            With face recognition in place, students can’t mark proxy attendance.
+          </p>
+        </div>
+        <div class="w-full lg:w-3/12 px-4 text-center">
+          <div
+            class="text-blueGray-800 p-3 w-12 h-12 shadow-lg rounded-full bg-white inline-flex items-center justify-center"
+          >
+            <i class="fas fa-poll text-xl"></i>
+          </div>
+          <h5 class="text-xl mt-5 font-semibold text-white">
+            Reduce efforts
+          </h5>
+          <p class="mt-2 mb-4 text-blueGray-400">
+            This system allows teachers and admins to record
+            attendance of the entire class or region using just
+            a smartphone, reducing both time and effort.
+          </p>
+        </div>
+        <div class="w-full lg:w-3/12 px-4 text-center">
+          <div
+            class="text-blueGray-800 p-3 w-12 h-12 shadow-lg rounded-full bg-white inline-flex items-center justify-center"
+          >
+            <i class="fas fa-lightbulb text-xl"></i>
+          </div>
+          <h5 class="text-xl mt-5 font-semibold text-white">Increases productivity</h5>
+          <p class="mt-2 mb-4 text-blueGray-400">
+            With admin work taken care of, teachers and admins can focus on more productive work.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="relative block py-24 lg:pt-0 bg-blueGray-800">
+    <div class="container mx-auto px-4">
+      <div class="flex flex-wrap justify-center lg:-mt-64 -mt-48">
+        <div class="w-full lg:w-6/12 px-4">
+          <div
+            class="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded-lg bg-blueGray-200"
+          >
+            <div class="flex-auto p-5 lg:p-10">
+              <h4 class="text-2xl font-semibold">Please let me know if you liked my submission :)</h4>
+              <p class="leading-relaxed mt-1 mb-4 text-blueGray-500">
+                Leave your comments here
+              </p>
+              <form #message="ngForm" (ngSubmit)="submit_review(message)">
+                <div class="relative w-full mb-3">
+                  <label
+                    class="block uppercase text-blueGray-600 text-xs font-bold mb-2"
+                    htmlFor="message"
+                  >
+                    Message
+                  </label>
+                  <textarea
+                    [ngModel]="filterName"
+                    class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full"
+                    cols="80"
+                    name="filterName"
+                    placeholder="Type a message..."
+                    rows="4"
+                  ></textarea>
+                </div>
+                <div class="text-center mt-6">
+                  <button
+                    class="bg-blueGray-800 text-white active:bg-blueGray-600 text-sm font-bold uppercase px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+                    type="submit"
+                  >
+                    Send Message
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+<app-footer></app-footer>

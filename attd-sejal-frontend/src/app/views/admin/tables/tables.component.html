@@ -1,0 +1,82 @@
+<div *ngFor="let class_title of class_titles" class="container">
+  <div class="flex flex-wrap mt-4">
+    <div class="w-full mb-12 px-4">
+      <div
+        [ngClass]="color === 'light' ? 'bg-white' : 'bg-red-900 text-white'"
+        class="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded"
+      >
+        <div class="rounded-t mb-0 px-4 py-3 border-0">
+          <div class="flex flex-wrap items-center">
+            <div class="relative w-full px-4 max-w-full flex-grow flex-1">
+              <h3
+                [ngClass]="color === 'light' ? 'text-blueGray-700' : 'text-white'"
+                class="font-semibold text-lg"
+              >
+                {{class_title}}
+              </h3>
+            </div>
+          </div>
+        </div>
+        <div class="block w-full overflow-x-auto">
+          <!-- Projects table -->
+          <table class="items-center w-full bg-transparent border-collapse">
+            <thead>
+            <tr>
+              <th
+                [ngClass]="
+              color === 'light'
+                ? 'bg-blueGray-50 text-blueGray-500 border-blueGray-100'
+                : 'bg-red-800 text-red-300 border-red-700'
+            "
+                class="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left"
+              >
+                Student Email ID
+              </th>
+              <th
+                [ngClass]="
+              color === 'light'
+                ? 'bg-blueGray-50 text-blueGray-500 border-blueGray-100'
+                : 'bg-red-800 text-red-300 border-red-700'
+            "
+                class="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left"
+              >
+                Attendance Status
+              </th>
+              <th
+                [ngClass]="
+              color === 'light'
+                ? 'bg-blueGray-50 text-blueGray-500 border-blueGray-100'
+                : 'bg-red-800 text-red-300 border-red-700'
+            "
+                class="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left"
+              ></th>
+            </tr>
+            </thead>
+            <tbody>
+            <ng-container *ngFor="let attendance of data">
+              <tr *ngIf="class_title == attendance.title">
+                <!--              <div *ngIf="attendance.title == class_title" class="container">-->
+                <th
+                  class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left flex items-center"
+                >
+              <span
+                [ngClass]="color === 'light' ? 'text-blueGray-600' : 'text-white'"
+                class="ml-3 font-bold"
+              >
+              {{attendance.student_email_id}}
+            </span>
+                </th>
+                <td class="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
+                  <i [ngClass]="attendance.attendance_marked == 0 ? 'text-orange-500' : 'text-green-500'" class="fas fa-circle mr-2"></i>
+                  {{attendance.attendance_marked == 0 ? 'Pending' : 'Completed'}}
+                </td>
+              </tr>
+            </ng-container>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>

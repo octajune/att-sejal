@@ -1,0 +1,57 @@
+version: '3.9'
+
+services:
+  angularapp:
+    container_name: angularapp
+    image: angularapp
+    build:
+      context: ./attd-sejal-frontend
+      dockerfile: ./DockerfileDev
+    ports:
+      - "80:80"
+    depends_on:
+      - pythonapp
+    environment:
+      - BACKEND_URL=http://localhost:5000/api/v1/
+    networks:
+      vpcbr:
+        ipv4_address: 10.5.0.7
+  pythonapp:
+    container_name: pythonapp
+    image: pythonapp
+    build:
+      context: ./attd-sejal-backend
+    ports:
+      - "5000:5000"
+    networks:
+      vpcbr:
+        ipv4_address: 10.5.0.6
+    environment:
+      - DATABASE_URL=postgresql://sejal:sejalmsengage@10.5.0.8/attd_db
+    depends_on:
+      - db_postgres
+  db_postgres:
+    container_name: db_postgres
+    image: 'postgres:12'
+    ports:
+      - "5432:5432"
+    networks:
+      vpcbr:
+        ipv4_address: 10.5.0.8
+    environment:
+      - POSTGRES_PASSWORD=sejalmsengage
+      - POSTGRES_USER=sejal
+      - POSTGRES_DB=attd_db
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+volumes:
+  pgdata: {}
+
+networks:
+  vpcbr:
+    driver: bridge
+    ipam:
+     config:
+       - subnet: 10.5.0.0/16
+         gateway: 10.5.0.1
