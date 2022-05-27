@@ -25,7 +25,6 @@ jobs:
       with:
         push: true
         tags: sejal.azurecr.io/${{ secrets.AzureAppService_ContainerUsername_1076c25de8b74874997cadd0c633dd12 }}/attdsejalfrontend:${{ github.sha }}
-        file: ./Dockerfile
         context: ./attd-sejal-frontend
 
   deploy:
