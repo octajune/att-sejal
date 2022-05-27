@@ -14,7 +14,10 @@ import datetime
 from flask_cors import CORS, cross_origin
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://sejal:6U0KN8UIMMEFWE7E$@sejal-database.postgres.database.azure.com/postgres?sslmode=require'
+if os.environ['DATABASE_URL'] is None or len(os.environ['DATABASE_URL'].trim()) == 0:
+    app.config['SQLALCHEMY_DATABASE_URI'] = os.environ['DATABASE_URL']
+else:
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://sejal:6U0KN8UIMMEFWE7E$@sejal-database.postgres.database.azure.com/postgres?sslmode=require'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SQLALCHEMY_POOL_SIZE'] = 20
 app.config['SQLALCHEMY_POOL_TIMEOUT'] = 300
