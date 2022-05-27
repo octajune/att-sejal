@@ -21,6 +21,7 @@ services:
     image: pythonapp
     build:
       context: ./attd-sejal-backend
+      dockerfile: ./DockerfileDev
     ports:
       - "5000:5000"
     networks:
