@@ -24,20 +24,12 @@ export class StudentDashboardComponent implements OnInit {
     body.append('email_id', localStorage.getItem('email_id'));
     body.append('token', localStorage.getItem('token'));
     this.http.post<any>(this.basePath + 'get_student_class_attd_stat', body).subscribe(data => {
+     console.log(data);
       if (!data.ERROR) {
+        console.log(data);
         this.line(data);
-      } else {
-        this.toastr.error(data.ERROR);
-      }
-    }, error => {
-      console.log(error);
-      this.toastr.error(error.message);
-    });
-
-    this.http.post<any>(this.basePath + 'get_student_attendance_time_records', body).subscribe(data => {
-      if (!data.ERROR) {
         for (let i=0; i<data.length; i++) {
-          this.attdTime.push({class_name: data[i].class_name, class_date: this.datepipe.transform(data[i].class_date, 'MMMM d, y'), masked_desc: data[i].marked == '0' ? 'Pending Attendance' : 'Attendance Marked'});
+          this.attdTime.push({class_name: data[i].class_name, class_date: this.datepipe.transform(data[i].class_date, 'MMMM d, y'), marked_desc: data[i].marked == 0 ? 'Absent' : 'Attendance Marked'});
         }
       } else {
         this.toastr.error(data.ERROR);
@@ -50,14 +42,13 @@ export class StudentDashboardComponent implements OnInit {
 
   line(data){
     console.log(data)
-    const labels = [];
-    const present = [];
-    const abs = [];
-    for (let i=0; i<data.lenth; i++) {
+    let labels = [];
+    let present = [];
+    let abs = [];
+    for (let i=0; i<data.length; i++) {
       console.log(i);
       labels.push(data[i].class_name+' | '+this.datepipe.transform(data[i].class_date, 'MMMM d, y'));
       present.push(data[i].marked);
-      abs.push(data[i].marked);
     }
 
     var config = {
@@ -67,17 +58,10 @@ export class StudentDashboardComponent implements OnInit {
         datasets: [
           {
             label: "Present",
-            backgroundColor: "#4c51bf",
-            borderColor: "#4c51bf",
-            data: present,
-            fill: false,
-          },
-          {
-            label: "Absent",
             fill: false,
             backgroundColor: "#fff",
             borderColor: "#fff",
-            data: abs,
+            data: present,
           },
         ],
       },
@@ -110,7 +94,7 @@ export class StudentDashboardComponent implements OnInit {
               ticks: {
                 fontColor: "rgba(255,255,255,.7)",
               },
-              display: true,
+              display: false,
               scaleLabel: {
                 display: false,
                 labelString: "Month",

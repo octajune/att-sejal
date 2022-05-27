@@ -38,8 +38,7 @@ export class TablesComponent implements OnInit {
   }
 
   getClassTitle(attd): string {
-    return attd['class_name'] + " - " + this.datepipe.transform(attd['class_date'], 'MMMM d, y') + " (" +
-      this.datepipe.transform(attd['start_time'], 'h:MM a') + " - " + this.datepipe.transform(attd['end_time'], 'h:MM a') + ")";
+    return attd['class_name'] + " - " + this.datepipe.transform(attd['class_date'], 'MMMM d, y');
   }
   /*
   [

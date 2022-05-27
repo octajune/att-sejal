@@ -26,11 +26,17 @@ export class StudentComponent implements OnInit {
         this.totalAttdPresent = data.present;
         this.totalAttdReq = data.total;
         this.totalAttdMissed = data.absent;
-        this.totalAttdPercent = ''+((data.present/data.length)*100)+'%';
+        //let num = Math.round(((data.present/data.length)*100) * 100) / 100
         if (data.total == '0')
           this.totalAttdPercent = 'No attendance requests';
-        else
+        else{
+          let num = Math.round(((data.present/data.length)*100) * 100) / 100;
           this.totalAttdPercent = ''+(100*(data.present/data.total)) + '%';
+        
+        }
+        
+
+        
       } else {
         this.toastr.error(data.ERROR);
       }

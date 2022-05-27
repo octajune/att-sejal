@@ -28,7 +28,7 @@ export class DashboardComponent implements OnInit {
     for (let i in data) {
       labels.push(i);
       present.push(data[i].present);
-      absent.push(data[i].total);
+      absent.push(data[i].total - data[i].present);
     }
     let config = {
       type: "bar",
@@ -80,7 +80,7 @@ export class DashboardComponent implements OnInit {
             {
               display: false,
               scaleLabel: {
-                display: true,
+                display: false,
                 labelString: "Class Name",
               },
               gridLines: {
@@ -127,7 +127,7 @@ export class DashboardComponent implements OnInit {
       console.log(i);
       labels.push(i);
       present.push(data[i].present);
-      total.push(data[i].total);
+      total.push(data[i].total-data[i].present);
     }
 
     var config = {
@@ -143,7 +143,7 @@ export class DashboardComponent implements OnInit {
             fill: false,
           },
           {
-            label: "Total",
+            label: "Absent",
             fill: false,
             backgroundColor: "#fff",
             borderColor: "#fff",
@@ -180,7 +180,7 @@ export class DashboardComponent implements OnInit {
               ticks: {
                 fontColor: "rgba(255,255,255,.7)",
               },
-              display: true,
+              display: false,
               scaleLabel: {
                 display: false,
                 labelString: "Month",
@@ -202,7 +202,7 @@ export class DashboardComponent implements OnInit {
               ticks: {
                 fontColor: "rgba(255,255,255,.7)",
               },
-              display: true,
+              display: false,
               scaleLabel: {
                 display: false,
                 labelString: "Value",
@@ -262,10 +262,10 @@ export class DashboardComponent implements OnInit {
           console.log(data);
           let email_id = key.split('|')[0];
           let class_name = key.split('|')[1];
-          let present = 10;//data[key].present;
+          let present = data[key].present;
           let absent = data[key].absent;
-          let total = 20;//data[key].total;
-          this.studentPercentage.push({email_id: email_id.trim(), class_name: class_name.trim(), present: present, total: total, percenti: 100%(present/total)+'%'})
+          let total = data[key].total;
+          this.studentPercentage.push({email_id: email_id.trim(), class_name: class_name.trim(), present: present, total: total})
         }
       } else {
         this.toastr.error(data.ERROR);

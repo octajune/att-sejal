@@ -28,7 +28,10 @@ export class AdminComponent implements OnInit {
       }
       this.totalAttdPresent = ''+present;
       this.totalAttdPending = ''+(data.length - present);
-      this.avgAttd = ''+((present/data.length)*100)+'%';
+      let num = Math.round(((present/data.length)*100) * 100) / 100
+      this.avgAttd = ''+num+'%';
+      if (data.length == '0')
+          this.avgAttd = 'No attendance requests';
     }, error => {
       console.log(error);
       this.toastr.error(error.message);

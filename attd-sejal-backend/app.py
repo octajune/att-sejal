@@ -9,12 +9,12 @@ import numpy as np
 from flask import Flask, jsonify
 from flask_sqlalchemy import SQLAlchemy
 import face_recognition
+import datetime
 
 from flask_cors import CORS, cross_origin
 
 app = Flask(__name__)
-app.config[
-    'SQLALCHEMY_DATABASE_URI'] = 'postgresql://sejal:6U0KN8UIMMEFWE7E$@sejal-database-server.postgres.database.azure.com/postgres?sslmode=require'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://sejal:6U0KN8UIMMEFWE7E$@sejal-database.postgres.database.azure.com/postgres?sslmode=require'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SQLALCHEMY_POOL_SIZE'] = 20
 app.config['SQLALCHEMY_POOL_TIMEOUT'] = 300
@@ -22,8 +22,8 @@ db = SQLAlchemy(app)
 CORS(app)
 app.config['CORS_HEADERS'] = 'Content-Type'
 email_regex = '^[a-z0-9]+[\._]?[a-z0-9]+[@]\w+[.]\w{2,3}$'
-PATH = "/tmp/profiles/"
-TEMP_PATH = "/tmp/temp/"
+PATH = "/etc/profiles/"
+TEMP_PATH = "/etc/temp/"
 BASE_ROUTE = '/api/v1/'
 
 
@@ -396,7 +396,7 @@ def get_missed_attendance():
     # Token.query.filter_by(email_id=email_id, user_type=1).first()
     cur_datetime = datetime.datetime.now()
 
-    list = Attendance.query.filter(Attendance.end_time < cur_datetime).order_by(Attendance.start_time.desc()).all()
+    list = Attendance.query.filter(Attendance.end_time < cur_datetime).order_by(Attendance.class_date.desc()).all()
     final_items = []
     for item in list:
         if item.student_email_id == email_id and item.attendance_marked == 0:
@@ -415,7 +415,7 @@ def get_pending_attendance():
     # Token.query.filter_by(email_id=email_id, user_type=1).first()
     cur_datetime = datetime.datetime.now()
 
-    list = Attendance.query.filter(Attendance.start_time <= cur_datetime).order_by(Attendance.start_time.desc()).all()
+    list = Attendance.query.filter(Attendance.start_time <= cur_datetime).order_by(Attendance.class_date.desc()).all()
     final_items = []
     for item in list:
         if item.student_email_id == email_id and item.attendance_marked == 0 and item.end_time >= cur_datetime:
@@ -460,7 +460,7 @@ def get_classes_by_teacher():
     if get_valid_token(teacher_email_id, 1) != token:
         return {"ERROR": "Incorrect token provided"}
     list = Attendance.query.filter_by(teacher_email_id=teacher_email_id).order_by(
-        Attendance.start_time.desc())
+        Attendance.class_date.desc())
     final_items = []
     for item in list:
         final_items.append(item.as_dict())
@@ -476,17 +476,18 @@ def get_present_absent_classes_by_teacher():
     if get_valid_token(teacher_email_id, 1) != token:
         return {"ERROR": "Incorrect token provided"}
     list = Attendance.query.filter_by(teacher_email_id=teacher_email_id).order_by(
-        Attendance.start_time.desc())
+        Attendance.class_date.desc())
     final_items = {}
     for item in list:
-        if item.class_name not in final_items:
-            final_items[item.class_name] = {"total":0, "present":0, "absent":0}
+        key = item.class_name + '|' + str(item.class_date)
+        if key not in final_items:
+            final_items[key] = {"total":0, "present":0, "absent":0}
 
-        final_items[item.class_name]['total'] = 1 + final_items[item.class_name]['total']
+        final_items[key]['total'] = 1 + final_items[key]['total']
         if item.attendance_marked == 1:
-            final_items[item.class_name]['present'] = 1 + final_items[item.class_name]['present']
+            final_items[key]['present'] = 1 + final_items[key]['present']
         else:
-            final_items[item.class_name]['absent'] = 1 + final_items[item.class_name]['absent']
+            final_items[key]['absent'] = 1 + final_items[key]['absent']
     return jsonify(final_items)
 
 @app.route(BASE_ROUTE + 'get_latest_class_by_teacher', methods=['POST'])
@@ -498,15 +499,38 @@ def get_latest_class_by_teacher():
     if get_valid_token(teacher_email_id, 1) != token:
         return {"ERROR": "Incorrect token provided"}
     list = Attendance.query.filter_by(teacher_email_id=teacher_email_id).order_by(
-        Attendance.start_time.desc())
+        Attendance.class_date.desc())
     if list is None:
         return {"ERROR":"You have no pending attendance requests"}
     final_items = []
-    first = list[0].class_name
     for item in list:
-        if item.class_name is first:
-            final_items.append(item.as_dict())
+        final_items.append(item.as_dict())
 
+    return jsonify(final_items)
+
+
+@app.route(BASE_ROUTE + 'get_student_stats', methods=['POST'])
+@cross_origin()
+def get_student_stats():
+    body = flask.request.values
+    student_email_id = body.getlist('email_id')[0]
+    token = body.getlist('token')[0]
+    if get_valid_token(student_email_id, 0) != token:
+        return {"ERROR": "Incorrect token provided"}
+    list = Attendance.query.filter_by(student_email_id=student_email_id).order_by(Attendance.class_date.desc())
+
+    if list is None:
+        return {"ERROR" : "You have no pending attendance requests"}
+    total = 0
+    present = 0
+    absent = 0
+    for item in list:
+        total += 1
+        if item.attendance_marked == 0:
+            absent += 1
+        else:
+            present += 1
+    final_items = {'present': present, 'total': total, 'absent': absent}
     return jsonify(final_items)
 
 @app.route(BASE_ROUTE + 'get_attendance_time_records', methods=['POST'])
@@ -525,6 +549,40 @@ def get_attendance_time_records():
             final_items.append({"email_id":item.student_email_id, "time":item.marked_time})
 
     return jsonify(final_items)
+
+@app.route(BASE_ROUTE + 'get_student_attendance_time_records', methods=['POST'])
+@cross_origin()
+def get_student_attendance_time_records():
+    body = flask.request.values
+    student_email_id = body.getlist('email_id')[0]
+    token = body.getlist('token')[0]
+    if get_valid_token(student_email_id, 0) != token:
+        return {"ERROR": "Incorrect token provided"}
+    list = Attendance.query.filter_by(student_email_id=student_email_id).order_by(
+        Attendance.class_date.desc()).limit(100)
+    final_items = []
+    for item in list:
+        final_items.append({"class_name": item.class_name,
+                            "class_date": item.class_date, "marked": item.attendance_marked})
+
+    return jsonify(final_items)
+
+@app.route(BASE_ROUTE + 'get_student_class_attd_stat', methods=['POST'])
+@cross_origin()
+def get_student_class_attd_stat():
+    body = flask.request.values
+    student_email_id = body.getlist('email_id')[0]
+    token = body.getlist('token')[0]
+    if get_valid_token(student_email_id, 0) != token:
+        return {"ERROR": "Incorrect token provided"}
+    list = Attendance.query.filter_by(student_email_id=student_email_id).order_by(
+        Attendance.class_date.desc()).limit(100)
+    final_items = []
+    for item in list:
+        final_items.append({"class_name":item.class_name, "class_date":item.class_date, "marked":item.attendance_marked})
+
+    return jsonify(final_items)
+
 
 @app.route(BASE_ROUTE + 'get_student_class_record', methods=['POST'])
 @cross_origin()
@@ -577,7 +635,7 @@ def create_class():
                                   teacher_email_id=teacher_email_id, attendance_marked=0,
                                   start_time=start_date_time, end_time=end_date_time, class_date=class_date_datetime))
 
-    db.session.commit()
+        db.session.commit()
     return {"SUCCESS": "Class created Successfully"}
 
 
