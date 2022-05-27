@@ -5,7 +5,8 @@ COPY package.json ./
 RUN npm install
 COPY . .
 RUN ls /usr/src/app/src/
-# RUN mv /usr/src/app/src/environments/environment.prod.ts /usr/src/app/src/environments/environment.ts
+RUN rm /usr/src/app/src/environments/environment.ts
+RUN mv /usr/src/app/src/environments/environment.prod.ts /usr/src/app/src/environments/environment.ts
 RUN npm run build -- --prod
 ### STAGE 2: Run ###
 FROM nginx:1.17.1-alpine
