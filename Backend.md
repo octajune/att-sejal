@@ -366,24 +366,6 @@ The FlaskAPI is hosted on:
 <br />
 
 
-
-
-
-## Databases
-## Working of token
-
-When the system gets the information from the user, it verifies all the info and stores the data in the database. During the saving process, it provides a unique token to the user. In future, this helps the user to log in over our page with a token and have access to its past history and information stored with us.
-## Why PostgreSQL?
-
-PostgreSQL is an advanced, enterprise-class, and open-source relational database system. 
-PostgreSQL supports both SQL (relational) and JSON (non-relational) querying. 
-
-I chose PostgreSQL database because it automates the maintenance, 
-patching, updates. It provides provision in minutes and independently
-scale compute or storage in seconds.
-
-
-
 ## Requirement
 
 Requirements for this app can be installed with `pip install -r requirements.txt`
