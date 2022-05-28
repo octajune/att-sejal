@@ -10,7 +10,6 @@ import { AuthComponent } from "./layouts/auth/auth.component";
 
 // admin views
 import { DashboardComponent } from "./views/admin/dashboard/dashboard.component";
-import { SettingsComponent } from "./views/admin/settings/settings.component";
 import { TablesComponent } from "./views/admin/tables/tables.component";
 
 // auth views
@@ -65,7 +64,6 @@ import { CardStatsComponent } from "./components/cards/card-stats/card-stats.com
     IndexNavbarComponent,
     AdminComponent,
     AuthComponent,
-    SettingsComponent,
     TablesComponent,
     LoginComponent,
     RegisterComponent,
