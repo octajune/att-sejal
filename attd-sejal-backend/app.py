@@ -14,7 +14,10 @@ import datetime
 from flask_cors import CORS, cross_origin
 
 app = Flask(__name__)
+# Need to uncomment the below line if running via docker-compose
 #app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL')
+
+# Need to comment this line if running via docker-compose
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://sejal:6U0KN8UIMMEFWE7E$@sejal-database.postgres.database.azure.com/postgres?sslmode=require'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SQLALCHEMY_POOL_SIZE'] = 20
@@ -28,6 +31,7 @@ TEMP_PATH = "/etc/temp/"
 BASE_ROUTE = '/api/v1/'
 
 
+# Attendance table will track the attendance status of each student. This schema is consistent with SQLAlchemy and it will initialize this table.
 class Attendance(db.Model):
     id = db.Column(db.Integer, unique=True, nullable=False, primary_key=True, autoincrement=True)
     class_name = db.Column(db.String(100), unique=False, nullable=False)
@@ -53,7 +57,7 @@ class Attendance(db.Model):
     def as_dict(self):
         return {c.name: getattr(self, c.name) for c in self.__table__.columns}
 
-
+# Student will track the student information. This schema is consistent with SQLAlchemy and it will initialize this table.
 class Student(db.Model):
     email_id = db.Column(db.String(30), unique=True, nullable=False, primary_key=True)
     name = db.Column(db.String(100), unique=False, nullable=False)
@@ -70,6 +74,7 @@ class Student(db.Model):
         return {c.name: getattr(self, c.name) for c in self.__table__.columns}
 
 
+# Review table will track anonymous reviews. This schema is consistent with SQLAlchemy and it will initialize this table.
 class Review(db.Model):
     id = db.Column(db.Integer, unique=True, nullable=False, primary_key=True, autoincrement=True)
     review = db.Column(db.String(10000), unique=False, nullable=False)
@@ -81,6 +86,7 @@ class Review(db.Model):
         return {c.name: getattr(self, c.name) for c in self.__table__.columns}
 
 
+# Teacher will track the teacher information. This schema is consistent with SQLAlchemy and it will initialize this table.
 class Teacher(db.Model):
     email_id = db.Column(db.String(30), unique=True, nullable=False, primary_key=True)
     name = db.Column(db.String(100), unique=False, nullable=False)
@@ -97,6 +103,7 @@ class Teacher(db.Model):
         return {c.name: getattr(self, c.name) for c in self.__table__.columns}
 
 
+# Tokens will be used for authenticating each request. This schema is consistent with SQLAlchemy and it will initialize this table.
 class Token(db.Model):
     email_id = db.Column(db.String(30), unique=False, nullable=False, primary_key=True)
     token = db.Column(db.String(256), unique=False, nullable=False, primary_key=True)
@@ -108,14 +115,16 @@ class Token(db.Model):
         self.user_type = user_type
 
 
+# Create the tables if not present.
 db.create_all()
 
 
+# Default route :)
 @app.route('/')
 def hello_world():  # put application's code here
     return {"SUCCESS": "Hi! I am Sejal. This is the backend of my Microsoft Engage Submission! :)"}
 
-
+# This API call is for my testing only. if no tables are there, then it will create it.
 @app.route(BASE_ROUTE + 'test_insertion', methods=['GET'])
 def test_insert():
     Token('test', 'test', 0)
@@ -130,6 +139,7 @@ def test_insert():
     return {}
 
 
+# Post request, it takes 'msg' as a parameter and saves it to the review table.
 @app.route(BASE_ROUTE + 'submit_review', methods=['POST'])
 def submit_review():
     body = flask.request.values
@@ -139,7 +149,14 @@ def submit_review():
     db.session.commit()
     return {"SUCCESS": "Message Added Successfully"}
 
+# First generate a random 16 character string and then create a hash out of it,
+# Using this algorithm for generarting the token and name of the image file to be saved locally
+def getRandomHasheToken():
+    x = ''.join(random.choice('0123456789ABCDEF') for i in range(16))
+    return hashlib.sha256(x.encode()).hexdigest()
+    
 
+# Post request, This API call is used to create the teacher account.
 @app.route(BASE_ROUTE + 'register_teacher', methods=['POST'])
 @cross_origin()
 def register_teacher():
@@ -149,6 +166,7 @@ def register_teacher():
     passwd_hash = body.getlist('passwd_hash')[0]
     image_file = body.getlist('image')[0]
 
+    # Check if the name or email isn't empty
     if len(name.strip()) == 0 or len(email_id.strip()) == 0:
         return {"ERROR": "Empty email or name received"}
 
@@ -163,35 +181,40 @@ def register_teacher():
 
     # Registration Begins
     #  Adding the token for the teacher
-    x = ''.join(random.choice('0123456789ABCDEF') for i in range(16))
-    token = hashlib.sha256(x.encode()).hexdigest()
+    # First generate a random 16 character string and then create a hash out of it
+    token = getRandomHasheToken()
     new_token = Token(email_id, token, 1)
+    # Stores the new token in the session, if anything bad happens to the future inserts then it will not get committed
     db.session.add(new_token)
 
     # Saving the profile
-    x = ''.join(random.choice('0123456789ABCDEF') for i in range(16))
-    image_path = hashlib.sha256(x.encode()).hexdigest()
+    # Using the same algorithm as token generation for generating the name of the file :)
+    image_path = getRandomHasheToken()
     new_teacher = Teacher(name=name, email_id=email_id, image_path=image_path, passwd_hash=passwd_hash)
     db.session.add(new_teacher)
+    # The image is sent in base64 format, removing extra bits which are sent from angular frontend
     image_file = image_file.replace('data:image/png;base64,', '')
     image_file = image_file.replace(' ', '+')
     image_file = base64.b64decode(image_file)
+    # Saving the image locally
     g = open(PATH + image_path + ".png", "wb")
     g.write(image_file)
     g.close()
-    # image_file.save(PATH + "{}.png".format(image_path))
     profile_pic = face_recognition.load_image_file(PATH + "{}.png".format(image_path))
+    
+    # Checking if the profile pic contains an image or not
     face_location = face_recognition.face_locations(profile_pic)
     if face_location is None or len(face_location) == 0:
         return {"ERROR": "No Face Detected"}
+    
+    # Committing the session if everything looks fine
     db.session.commit()
     x = new_teacher.as_dict()
     x['token'] = new_token.token
     x['user_type'] = 1
     return x
 
-
-# get marked attendance
+# Returns the list of marked attendance of the student ordered in descending order of the start time of the class
 @app.route(BASE_ROUTE + "get_marked_attendance", methods=['POST'])
 def get_marked_attendance():
     body = flask.request.values
@@ -200,9 +223,9 @@ def get_marked_attendance():
     token = body.getlist('token')[0]
     if get_valid_token(email_id, 0) != token:
         return {"ERROR": "Incorrect token provided"}
-    # Token.query.filter_by(email_id=email_id, user_type=1).first()
     cur_datetime = datetime.datetime.now()
 
+    # Get all the marked attendance of the student ordered in descending order of the start time of the class
     list = Attendance.query.filter_by(student_email_id=email_id, attendance_marked=1).order_by(
         Attendance.start_time.desc()).all()
     final_items = []
@@ -210,7 +233,7 @@ def get_marked_attendance():
         final_items.append(item.as_dict())
     return jsonify(final_items)
 
-
+# Returns the profile of the teacher or student depending on the user_type provided by the angular application
 @app.route(BASE_ROUTE + "get_profile", methods=['POST'])
 def get_profile():
     body = flask.request.values
@@ -220,29 +243,36 @@ def get_profile():
         return {"ERROR": "Incorrect token provided"}
     user_type = body.getlist('user_type')[0]
     if user_type == 1:
+        # Query the Teacher table to get the record with email_id = provided email_id
         exis_teacher = Teacher.query.get(email_id)
+        # Reset the password hash in response, since we won't want others to know about it
         exis_teacher.passwd_hash = ''
         return exis_teacher.as_dict()
     else:
+        # Query the Teacher table to get the record with email_id = provided email_id
         exis_student = Student.query.get(email_id)
+        # Reset the password hash in response, since we won't want others to know about it
         exis_student.passwd_hash = ''
         return exis_student.as_dict()
 
-
+# Most complex API of them all
+# Does image recognition and marks the attendance successfully or returns an error message
 @app.route(BASE_ROUTE + "mark_attendance", methods=['POST'])
 def mark_attendance():
     body = flask.request.values
     token = body.getlist('token')[0]
     email_id = body.getlist('email_id')[0]
+    # Check if the right token is provided from the db
     if get_valid_token(email_id, 0) != token:
         return {"ERROR": "Incorrect token provided"}
 
-    image_file = flask.request.files.get('image', '')
-    x = ''.join(random.choice('0123456789ABCDEF') for i in range(16))
-    temp_file_name = hashlib.sha256(x.encode()).hexdigest()
+    temp_file_name = getRandomHasheToken()
     image_file = body.getlist('image')[0]
+
+    # Gets the image in base64 format and removes the extra stuff which is appended by angular
     image_file = image_file.replace('data:image/png;base64,', '')
     image_file = image_file.replace(' ', '+')
+    # Decode the base64 image and save it
     image_file = base64.b64decode(image_file)
     g = open(TEMP_PATH + temp_file_name + ".png", "wb")
     g.write(image_file)
@@ -259,6 +289,7 @@ def mark_attendance():
                                      int(end_time[1]))
 
     exis_student = Student.query.get(email_id)
+    # Fetch a record based on the values provided by the student
     attend_student = db.session.query(Attendance).filter_by(
         student_email_id=email_id,
         class_name=class_name,
@@ -270,8 +301,10 @@ def mark_attendance():
     if attend_student is None:
         return {"ERROR": "No pending attendance record found for the values provided."}
 
+    # Load the provided image
     image_pic = face_recognition.load_image_file(TEMP_PATH + temp_file_name + ".png")
     face_location = face_recognition.face_locations(image_pic)
+    # If no faces are detected then return false
     if face_location is None or len(face_location) == 0:
         return {"ERROR": "No Image Detected"}
 
@@ -279,6 +312,7 @@ def mark_attendance():
     profile_pic_encoding = face_recognition.face_encodings(profile_pic)[0]
 
     image_encoding = face_recognition.face_encodings(image_pic)[0]
+    # Check if the provided image matches the image in the profile picture
     is_target_face = face_recognition.compare_faces(np.array([profile_pic_encoding]), image_encoding, tolerance=0.5)
     if is_target_face[0]:
         attend_student.attendance_marked = 1
@@ -289,33 +323,36 @@ def mark_attendance():
         return {"ERROR": "Image not matching"}
 
 
+# User for logging the teacher into the website. return the token if the password_hash provided matches the password_hash in the db
 @app.route(BASE_ROUTE + 'login_teacher', methods=['POST'])
 @cross_origin()
 def login_teacher():
     body = flask.request.values
     email_id = body.getlist('email_id')[0]
     passwd_hash = body.getlist('passwd_hash')[0]
+    # Check if the email is a valid email or not
     if not re.search(email_regex, email_id):
         return {"ERROR": "Invalid email ID provided"}
+    # Fetch the existing token using the email and user_type
     exis_token = Token.query.filter_by(email_id=email_id, user_type=1).first()
     exis_teacher = Teacher.query.filter_by(email_id=email_id).first()
     if exis_token is None:
         return {"ERROR": "User doesn't exist"}
     elif exis_teacher.passwd_hash != passwd_hash:
-        return {"ERROR": "Incorrect password provided"}
+        return {"ERROR": "Incorrect password provided"} # If the token exists then we need to match the hashes, return the token only if the hashes match else return ERROR
     x = exis_teacher.as_dict()
     x['token'] = exis_token.token
     x['user_type'] = 1
     return x
 
-
+# Returns the valid token of the user
 def get_valid_token(email_id, user_type):
     tokens_list = Token.query.filter_by(email_id=email_id, user_type=user_type).first()
     if tokens_list is None:
         return ''
     return tokens_list.token
 
-
+# Post request, This API call is used to create the teacher account.
 @app.route(BASE_ROUTE + 'register_student', methods=['POST'])
 @cross_origin()
 def register_student():
@@ -325,6 +362,7 @@ def register_student():
     passwd_hash = body.getlist('passwd_hash')[0]
     image_file = body.getlist('image')[0]
 
+    # Check if the name and email aren't empty
     if len(name.strip()) == 0 or len(email_id.strip()) == 0:
         return {"ERROR": "Empty email or name received"}
 
@@ -339,25 +377,28 @@ def register_student():
 
     # Registration Begins
     #  Adding the token for the teacher
-    x = ''.join(random.choice('0123456789ABCDEF') for i in range(16))
-    token = hashlib.sha256(x.encode()).hexdigest()
+    token = getRandomHasheToken()
     new_token = Token(email_id, token, 0)
     db.session.add(new_token)
 
     # Saving the profile
-    x = ''.join(random.choice('0123456789ABCDEF') for i in range(16))
-    image_path = hashlib.sha256(x.encode()).hexdigest()
+    # Genrate a randome hash as the file name
+    image_path = getRandomHasheToken()
     new_student = Student(name=name, email_id=email_id, image_path=image_path, passwd_hash=passwd_hash)
     db.session.add(new_student)
+
+    # Remove extra stuff which angular sends along with the base64 image
     image_file = image_file.replace('data:image/png;base64,', '')
     image_file = image_file.replace(' ', '+')
+    # Decode the base64 image and save it
     image_file = base64.b64decode(image_file)
     g = open(PATH + image_path + ".png", "wb")
     g.write(image_file)
     g.close()
-    # image_file.save(PATH + "{}.png".format(image_path))
+    
     profile_pic = face_recognition.load_image_file(PATH + "{}.png".format(image_path))
     face_location = face_recognition.face_locations(profile_pic)
+    # Check if the image sent has a face or not, if not return and error message.
     if face_location is None or len(face_location) == 0:
         return {"ERROR": "No Face Detected"}
     db.session.commit()
@@ -367,6 +408,7 @@ def register_student():
     return x
 
 
+#This API will login the student. On successful login, it returns the token of the student,
 @app.route(BASE_ROUTE + 'login_student', methods=['POST'])
 def login_student():
     body = flask.request.values
@@ -379,13 +421,14 @@ def login_student():
     if exis_token is None:
         return {"ERROR": "User doesn't exist"}
     elif exis_student.passwd_hash != passwd_hash:
-        return {"ERROR": "Incorrect password provided"}
+        return {"ERROR": "Incorrect password provided"} # Return the token only when the hash matches
     x = exis_student.as_dict()
     x['token'] = exis_token.token
     x['user_type'] = 0
     return x
 
 
+# Returns the list of attendance which is before the current time in descending order of class_date
 @app.route(BASE_ROUTE + 'get_missed_attendance', methods=['POST'])
 def get_missed_attendance():
     body = flask.request.values
@@ -394,9 +437,9 @@ def get_missed_attendance():
     token = body.getlist('token')[0]
     if get_valid_token(email_id, 0) != token:
         return {"ERROR": "Incorrect token provided"}
-    # Token.query.filter_by(email_id=email_id, user_type=1).first()
-    cur_datetime = datetime.datetime.now()
 
+    cur_datetime = datetime.datetime.now()
+    # Returns the list of attendance which is before the current time in descending order of class_date
     list = Attendance.query.filter(Attendance.end_time < cur_datetime).order_by(Attendance.class_date.desc()).all()
     final_items = []
     for item in list:
@@ -413,7 +456,7 @@ def get_pending_attendance():
     token = body.getlist('token')[0]
     if get_valid_token(email_id, 0) != token:
         return {"ERROR": "Incorrect token provided"}
-    # Token.query.filter_by(email_id=email_id, user_type=1).first()
+
     cur_datetime = datetime.datetime.now()
 
     list = Attendance.query.filter(Attendance.start_time <= cur_datetime).order_by(Attendance.class_date.desc()).all()
@@ -568,6 +611,7 @@ def get_student_attendance_time_records():
 
     return jsonify(final_items)
 
+# Returns the student email id stats, for the student_email_id
 @app.route(BASE_ROUTE + 'get_student_class_attd_stat', methods=['POST'])
 @cross_origin()
 def get_student_class_attd_stat():
@@ -584,7 +628,7 @@ def get_student_class_attd_stat():
 
     return jsonify(final_items)
 
-
+# Returns the number of class records associated with a teacher_email_id
 @app.route(BASE_ROUTE + 'get_student_class_record', methods=['POST'])
 @cross_origin()
 def get_student_class_record():
@@ -608,6 +652,7 @@ def get_student_class_record():
 
     return jsonify(final_items)
 
+# Reads through the emailIds and creates the record for the students in the attendance table
 @app.route(BASE_ROUTE + "create_class", methods=['POST'])
 @cross_origin()
 def create_class():
@@ -630,6 +675,7 @@ def create_class():
     end_date_time = datetime.datetime(int(class_date[0]), int(class_date[1]), int(class_date[2]), int(end_time[0]),
                                       int(end_time[1]))
     student_email_ids = body.getlist('student_email_ids')[0].split(',')
+    # split the email_ids into a list and start creating a record in the attendance table
     for student_email_id in student_email_ids:
         student_email_id = student_email_id.strip()
         db.session.add(Attendance(class_name=class_name, student_email_id=student_email_id,
