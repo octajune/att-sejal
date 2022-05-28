@@ -46,7 +46,7 @@ The FlaskAPI is hosted on:
 
 | Type     | Methods               | Description               |
 | :------- | :------------------------- |:------------------------- |
-| `string` | POST | Creates the tables. If the tables already exist then does nothing. Only for testing |
+| `string` | POST | Present at the landing page. Allows anonymous reviews |
 
 | Parameter    |
 | :--------    |
@@ -77,7 +77,7 @@ The FlaskAPI is hosted on:
 ```
 | Type     | Methods               | Description               |
 | :------- | :------------------------- |:------------------------- |
-| `string` | POST | |
+| `string` | POST | Teacher can get the marked attendance of student |
 
 
 | Parameter    |
@@ -93,7 +93,7 @@ The FlaskAPI is hosted on:
 ```
 | Type     | Methods               | Description               |
 | :------- | :------------------------- |:------------------------- |
-| `string` | POST |  | 
+| `string` | POST | Returns the profile of teacher or student based on `user_type`  | 
 
 
 | Parameter    |
@@ -110,7 +110,7 @@ The FlaskAPI is hosted on:
 ```
 | Type     | Methods               | Description               |
 | :------- | :------------------------- |:------------------------- |
-| `string` | POST |  | 
+| `string` | POST | Does image recognition and if match is successful then marks the student's attendance | 
 
 
 | Parameter    |
@@ -131,7 +131,7 @@ The FlaskAPI is hosted on:
 ```
 | Type     | Methods               | Description               |
 | :------- | :------------------------- |:------------------------- |
-| `string` | POST |  | 
+| `string` | POST | If a teacher login is successful then returns a token | 
 
 
 | Parameter    |
@@ -147,7 +147,7 @@ The FlaskAPI is hosted on:
 ```
 | Type     | Methods               | Description               |
 | :------- | :------------------------- |:------------------------- |
-| `string` | POST |  | 
+| `string` | POST | Registers a student, returns a token if successful | 
 
 
 | Parameter    |
@@ -164,7 +164,7 @@ The FlaskAPI is hosted on:
 ```
 | Type     | Methods               | Description               |
 | :------- | :------------------------- |:------------------------- |
-| `string` | POST |  | 
+| `string` | POST | If a student login is successful then returns a token | 
 
 
 | Parameter    |
@@ -179,7 +179,7 @@ The FlaskAPI is hosted on:
 ```
 | Type     | Methods               | Description               |
 | :------- | :------------------------- |:------------------------- |
-| `string` | POST |  | 
+| `string` | POST | Returns the missed attendance of each student | 
 
 
 | Parameter    |
@@ -195,7 +195,7 @@ The FlaskAPI is hosted on:
 ```
 | Type     | Methods               | Description               |
 | :------- | :------------------------- |:------------------------- |
-| `string` | POST |  | 
+| `string` | POST | Returns the pending attendance of each student | 
 
 
 | Parameter    |
@@ -211,7 +211,7 @@ The FlaskAPI is hosted on:
 ```
 | Type     | Methods               | Description               |
 | :------- | :------------------------- |:------------------------- |
-| `string` | POST |  | 
+| `string` | POST | Returns the class attendance for the teacher | 
 
 
 | Parameter    |
@@ -231,7 +231,7 @@ The FlaskAPI is hosted on:
 ```
 | Type     | Methods               | Description               |
 | :------- | :------------------------- |:------------------------- |
-| `string` | POST |  | 
+| `string` | POST | Returns the list of classes by the teacher | 
 
 
 | Parameter    |
@@ -246,7 +246,7 @@ The FlaskAPI is hosted on:
 ```
 | Type     | Methods               | Description               |
 | :------- | :------------------------- |:------------------------- |
-| `string` | POST |  | 
+| `string` | POST | Returns the student absent or present in each class for the teacher | 
 
 
 | Parameter    |
@@ -261,7 +261,7 @@ The FlaskAPI is hosted on:
 ```
 | Type     | Methods               | Description               |
 | :------- | :------------------------- |:------------------------- |
-| `string` | POST |  | 
+| `string` | POST | Returns the details for the latest class of the teacher | 
 
 
 | Parameter    |
@@ -276,7 +276,7 @@ The FlaskAPI is hosted on:
 ```
 | Type     | Methods               | Description               |
 | :------- | :------------------------- |:------------------------- |
-| `string` | POST |  | 
+| `string` | POST | Returns the student statistics | 
 
 
 | Parameter    |
@@ -291,7 +291,7 @@ The FlaskAPI is hosted on:
 ```
 | Type     | Methods               | Description               |
 | :------- | :------------------------- |:------------------------- |
-| `string` | POST |  | 
+| `string` | POST | Returns the attendance time record for the teacher ordered by the `marked_time` in descending order | 
 
 
 | Parameter    |
@@ -306,7 +306,7 @@ The FlaskAPI is hosted on:
 ```
 | Type     | Methods               | Description               |
 | :------- | :------------------------- |:------------------------- |
-| `string` | POST |  | 
+| `string` | POST | Returns the student time records for each student | 
 
 
 | Parameter    |
@@ -321,7 +321,7 @@ The FlaskAPI is hosted on:
 ```
 | Type     | Methods               | Description               |
 | :------- | :------------------------- |:------------------------- |
-| `string` | POST |  | 
+| `string` | POST | Returns the statistics for the student for the specified class | 
 
 
 | Parameter    |
@@ -336,7 +336,7 @@ The FlaskAPI is hosted on:
 ```
 | Type     | Methods               | Description               |
 | :------- | :------------------------- |:------------------------- |
-| `string` | POST |  | 
+| `string` | POST | Returns the class record for the student for the specified class | 
 
 
 | Parameter    |
@@ -347,11 +347,11 @@ The FlaskAPI is hosted on:
 <br />
 
 ```
-/api/v1/get_create_class
+/api/v1/create_class
 ```
 | Type     | Methods               | Description               |
 | :------- | :------------------------- |:------------------------- |
-| `string` | POST |  | 
+| `string` | POST | Teacher creates the class and specifies the email of each student present in the class in this request | 
 
 
 | Parameter    |
@@ -362,6 +362,7 @@ The FlaskAPI is hosted on:
 |`start_time`|
 |`end_time`|
 |`class_date`|
+|`student_email_ids`|
 
 <br />
 
