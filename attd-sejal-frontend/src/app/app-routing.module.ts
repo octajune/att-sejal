@@ -7,7 +7,6 @@ import { AuthComponent } from "./layouts/auth/auth.component";
 
 // admin views
 import { DashboardComponent } from "./views/admin/dashboard/dashboard.component";
-import { MapsComponent } from "./views/admin/maps/maps.component";
 import { SettingsComponent } from "./views/admin/settings/settings.component";
 import { TablesComponent } from "./views/admin/tables/tables.component";
 
@@ -16,9 +15,7 @@ import { LoginComponent } from "./views/auth/login/login.component";
 import { RegisterComponent } from "./views/auth/register/register.component";
 
 // no layouts views
-import { IndexComponent } from "./views/index/index.component";
 import { LandingComponent } from "./views/landing/landing.component";
-import { ProfileComponent } from "./views/profile/profile.component";
 import {CreateClassComponent} from './views/admin/create_class/create_class.component';
 import {MarkAttendanceComponent} from './views/student/mark_attendance/mark_attendance.component';
 import {StudentComponent} from './layouts/student/student.component';
@@ -57,7 +54,6 @@ const routes: Routes = [
     ],
   },
   // no layout views
-  { path: "profile", component: ProfileComponent },
   { path: "landing", component: LandingComponent },
   { path: "", component: LandingComponent },
   { path: "**", redirectTo: "", pathMatch: "full" },

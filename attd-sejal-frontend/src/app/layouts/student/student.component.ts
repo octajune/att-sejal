@@ -30,9 +30,10 @@ export class StudentComponent implements OnInit {
         if (data.total == '0')
           this.totalAttdPercent = 'No attendance requests';
         else{
-          let num = Math.round(((data.present/data.length)*100) * 100) / 100;
-          this.totalAttdPercent = ''+(100*(data.present/data.total)) + '%';
-        
+          let num = Math.round(((data.present/data.total)*100) * 100) / 100;
+          this.totalAttdPercent = ''+num+'%';
+          if (data.total == '0')
+            this.totalAttdPercent = 'No attendance requests';
         }
         
 
