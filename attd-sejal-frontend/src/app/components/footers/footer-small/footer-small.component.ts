@@ -7,6 +7,7 @@ import { Component, OnInit, Input } from "@angular/core";
 export class FooterSmallComponent implements OnInit {
   date = new Date().getFullYear();
 
+  // Gets or sets the value of the absolute property.
   @Input()
   get absolute(): boolean {
     return this._absolute;

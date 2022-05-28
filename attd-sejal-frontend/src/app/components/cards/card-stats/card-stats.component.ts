@@ -1,3 +1,5 @@
+// Computes the stats for a card.
+
 import { Component, OnInit, Input } from "@angular/core";
 
 @Component({
@@ -5,10 +7,12 @@ import { Component, OnInit, Input } from "@angular/core";
   templateUrl: "./card-stats.component.html",
 })
 export class CardStatsComponent implements OnInit {
+  // Gets the stat subtitle.
   @Input()
   get statSubtitle(): string {
     return this._statSubtitle;
   }
+  // Sets the statSubtitle.
   set statSubtitle(statSubtitle: string) {
     this._statSubtitle = statSubtitle === undefined ? "Traffic" : statSubtitle;
   }

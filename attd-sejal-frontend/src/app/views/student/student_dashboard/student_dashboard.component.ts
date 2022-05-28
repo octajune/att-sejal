@@ -14,43 +14,48 @@ export class StudentDashboardComponent implements OnInit {
   basePath = environment.backendURL;
   attdTime: any = [];
   ngOnInit() {
+    //If the user type is teacher then redirect them to the teacher dashboard
     if (localStorage.getItem("user_type") == '1')
       this.router.navigate(['admin/dashboard']);
   }
   constructor(private http: HttpClient, private router: Router, private toastr: ToastrService, private datepipe: DatePipe) {}
 
   ngAfterViewInit() {
+    // Generates a form data for the email.
     const body = new FormData();
     body.append('email_id', localStorage.getItem('email_id'));
     body.append('token', localStorage.getItem('token'));
+    // Get student s attribute stats.
     this.http.post<any>(this.basePath + 'get_student_class_attd_stat', body).subscribe(data => {
      console.log(data);
       if (!data.ERROR) {
-        console.log(data);
+        // Writes data to the line.
         this.line(data);
+        // Format the data into human readable format and add to attdTime, which will be displayed in HTML
         for (let i=0; i<data.length; i++) {
           this.attdTime.push({class_name: data[i].class_name, class_date: this.datepipe.transform(data[i].class_date, 'MMMM d, y'), marked_desc: data[i].marked == 0 ? 'Absent' : 'Attendance Marked'});
         }
       } else {
+        // Toastr. error
         this.toastr.error(data.ERROR);
       }
     }, error => {
-      console.log(error);
+      // Error message.
       this.toastr.error(error.message);
     });
   }
-
+  
+  // Creates a line chart
   line(data){
-    console.log(data)
+    // Computes the labels, presenta and absent values from data.
     let labels = [];
     let present = [];
-    let abs = [];
     for (let i=0; i<data.length; i++) {
-      console.log(i);
       labels.push(data[i].class_name+' | '+this.datepipe.transform(data[i].class_date, 'MMMM d, y'));
       present.push(data[i].marked);
     }
 
+    //Config file for the line chart
     var config = {
       type: "line",
       data: {
@@ -136,6 +141,7 @@ export class StudentDashboardComponent implements OnInit {
         },
       },
     };
+    // Creates a new chart.
     let ctx: any = document.getElementById("line-chart") as HTMLCanvasElement;
     ctx = ctx.getContext("2d");
     new Chart(ctx, config);

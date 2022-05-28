@@ -17,6 +17,7 @@ export class UserDropdownComponent implements AfterViewInit {
   popoverDropdownRef: ElementRef;
   img: any;
   ngAfterViewInit() {
+    // Creates a popper for the bottom - start popover
     createPopper(
       this.btnDropdownRef.nativeElement,
       this.popoverDropdownRef.nativeElement,
@@ -26,6 +27,7 @@ export class UserDropdownComponent implements AfterViewInit {
     );
   }
   toggleDropdown(event) {
+    // Event handler for the dropdown popover.
     event.preventDefault();
     if (this.dropdownPopoverShow) {
       this.dropdownPopoverShow = false;
@@ -35,6 +37,7 @@ export class UserDropdownComponent implements AfterViewInit {
   }
 
   logOut() {
+    // Delete the local storage and route to the landing page
     localStorage.clear();
     this.router.navigate(['/']);
   }

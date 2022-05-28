@@ -17,10 +17,13 @@ export class HeaderStatsComponent implements OnInit {
   constructor(private http: HttpClient, private toastr: ToastrService, private router: Router) {}
 
   ngOnInit(): void {
+    // Generates a const form data.
     const body = new FormData();
     body.append("email_id", localStorage.getItem('email_id'));
     body.append("token", localStorage.getItem('token'));
+    // Get the most recent class for a teacher.
     this.http.post<any>(this.basePath + 'get_latest_class_by_teacher', body).subscribe(data=>{
+      // Converts the attendance data.
       this.totalStudents = ''+data.length;
       var present = 0;
       for (var i=0; i<data.length; i++) {
@@ -31,6 +34,7 @@ export class HeaderStatsComponent implements OnInit {
       let num = Math.round(((present/data.length)*100) * 100) / 100
       this.avgAttd = ''+num+'%';
     }, error => {
+      // Logs an error and logs it.
       console.log(error);
       this.toastr.error(error.message);
     });

@@ -17,11 +17,14 @@ export class DashboardComponent implements OnInit {
   constructor(private router :  Router, private http: HttpClient, private toastr: ToastrService, private datepipe: DatePipe) {}
 
   ngOnInit() {
+    // Navigate to the student dashboard if a student gets to this page
     if (localStorage.getItem("user_type") == '0')
       this.router.navigate(['student/dashboard']);
   }
 
+  //Creates the bar chart
   bar(data){
+    // Computes the labels, presenta and absent values from data.
     const labels = [];
     const present = [];
     const absent = [];
@@ -32,6 +35,7 @@ export class DashboardComponent implements OnInit {
     }
     let config = {
       type: "bar",
+      // Generates a dataset for a student.
       data: {
         labels: labels,
         datasets: [
@@ -53,6 +57,7 @@ export class DashboardComponent implements OnInit {
           },
         ],
       },
+      // Config file for the chart
       options: {
         maintainAspectRatio: false,
         responsive: true,
@@ -114,22 +119,25 @@ export class DashboardComponent implements OnInit {
         },
       },
     };
+    // Create a new chart.
     let ctx: any = document.getElementById("bar-chart");
     ctx = ctx.getContext("2d");
     new Chart(ctx, config);
   }
+  
+  // Creates a line chart
   line(data){
-    console.log(data)
+    // Computes the labels, presenta and absent values from data.
     const labels = [];
     const present = [];
     const total = [];
     for (let i in data) {
-      console.log(i);
       labels.push(i);
       present.push(data[i].present);
       total.push(data[i].total-data[i].present);
     }
 
+    //Config file for the line chart
     var config = {
       type: "line",
       data: {
@@ -222,56 +230,68 @@ export class DashboardComponent implements OnInit {
         },
       },
     };
+    // Creates a new chart.
     let ctx: any = document.getElementById("line-chart") as HTMLCanvasElement;
     ctx = ctx.getContext("2d");
     new Chart(ctx, config);
   }
 
   ngAfterViewInit() {
+    // Generates a form data for the email.
     const body = new FormData();
     body.append('email_id', localStorage.getItem('email_id'));
     body.append('token', localStorage.getItem('token'));
+    // Get all classes present absent classes by teacher
     this.http.post<any>(this.basePath + 'get_present_absent_classes_by_teacher', body).subscribe(data => {
       if (!data.ERROR) {
+        // Draws a line and bar.
         this.line(data);
         this.bar(data);
       } else {
+        // Toastr. error
         this.toastr.error(data.ERROR);
       }
     }, error => {
-      console.log(error);
+      // Logs an error and logs it.
       this.toastr.error(error.message);
     });
+
+    // Get a list of attendance time records
     this.http.post<any>(this.basePath + 'get_attendance_time_records', body).subscribe(data=>{
       console.log(data)
       if (!data.ERROR) {
+        // Returns a string containing the email id and time.
         for (let i=0; i<data.length; i++) {
           this.attdTime[i] = {'email_id': data[i].email_id, 'time': this.datepipe.transform(data[i].time, "hh:mm a, MMM d, y")};
         }
       } else {
+        // Toastr. error
         this.toastr.error(data.ERROR);
       }
     }, error => {
-      console.log(error);
+      // Error message.
       this.toastr.error(error.message);
     });
+    
+    // Get a student class record
     this.http.post<any>(this.basePath + 'get_student_class_record', body).subscribe(data=>{
-      console.log(data)
       if (!data.ERROR) {
+        // Adds a student percent to the student percents.
         for (let key in data) {
-          console.log(data);
+          // Adds a student percent to the student percents table.
           let email_id = key.split('|')[0];
           let class_name = key.split('|')[1];
           let present = data[key].present;
           let absent = data[key].absent;
           let total = data[key].total;
-          this.studentPercentage.push({email_id: email_id.trim(), class_name: class_name.trim(), present: present, total: total})
+          this.studentPercentage.push({email_id: email_id.trim(), class_name: class_name.trim(), present: present, total: total});
         }
       } else {
+        // Toastr. error
         this.toastr.error(data.ERROR);
       }
     }, error => {
-      console.log(error);
+      // Error message.
       this.toastr.error(error.message);
     });
   }

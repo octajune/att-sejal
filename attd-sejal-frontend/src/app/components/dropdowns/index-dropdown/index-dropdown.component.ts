@@ -11,6 +11,7 @@ export class IndexDropdownComponent implements OnInit {
   @ViewChild("popoverDropdownRef", { static: false })
   popoverDropdownRef: ElementRef;
   ngOnInit() {}
+  // Toggle dropdown.
   toggleDropdown(event) {
     event.preventDefault();
     if (this.dropdownPopoverShow) {
@@ -20,6 +21,7 @@ export class IndexDropdownComponent implements OnInit {
       this.createPoppper();
     }
   }
+  // Creates a popper for the bottom - start popover
   createPoppper() {
     createPopper(
       this.btnDropdownRef.nativeElement,
