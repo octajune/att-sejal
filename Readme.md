@@ -37,7 +37,7 @@ These are the major points for the project:
 <hr />
 
 ## Facial Recognition
-<b>The documentation for the image recognition algorithm used can be found at [Imageprocessing.md](Imageprocessing.md)<b>
+<b>The documentation for the image recognition algorithm used can be found at [ImageProcessing.md](ImageProcessing.md)<b>
 
 <hr/>
 
@@ -58,6 +58,9 @@ These are the major points for the project:
 ## CI/CD
 <b>You can find my explaination of the CI/CD approach and some screenshots of Github actions in action :) [CICD.md](CICD.md)<b>
 <hr />
+
+## Token Based Authentication
+<b>The documentation for the how the token based authentication works in my project is here [Authentication.md](Authentication.md)<b>
 
 ## Timeline
 
