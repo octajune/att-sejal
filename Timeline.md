@@ -13,8 +13,8 @@ in the above document.
 data flow
 
 ### UI design:
-- Finalize UX flow and colour scheme
-- Start working on the Design: [Notus Angular](https://github.com/creativetimofficial/notus-angular)
+- Finalize UX flow and colour scheme.
+- Start working on the Design.
 
 ### System Design:
 - Research upon various system architectures
