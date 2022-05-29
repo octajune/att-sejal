@@ -77,7 +77,7 @@ These are the major points for the project:
 - Change the db url to use `app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL')`
 - run `sudo docker-compose up` from the root directory of the application
 - The website must be running on `localhost:80`
-- The Flask APIs must be running on `localhost:4200`
+- The Flask APIs must be running on `localhost:5000`
 
 ## My Development Setup
 
