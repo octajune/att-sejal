@@ -14,6 +14,9 @@ I have mocked the data for a teacher account (Username: ivy.sejal@gmail.com, Pas
 
 ![alt text](images/landing.png "Attendance Manager")
 
+## Technology Stack
+`CI/CD using GitHub Actions`, `Azure App Service`, `Azure Container Registry`, `Dockers`, `Docker-Compose`, `Python`, `Flask`, `Postgres`, `SQL-Alchemy`, `Facial Recognition`, `Angular`, `REST API`, `Token based authentication`
+
 ## System Architecture
 
 These are the major points for the project:
