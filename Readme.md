@@ -8,8 +8,8 @@ The system works on facial recognition where each student in the class is photog
 teacher can record the attendance automatically in the classroom. The system will recognise the faces and verify the presence or
 absence of each student. 
 
-The website is currently hosted on: https://sejal-web.azurewebsites.net/ 
-
+The website is currently hosted on: https://sejal-web.azurewebsites.net/ <br />
+Video Demo: https://www.youtube.com/watch?v=2SSLMAmgel0 <br /> <br />
 I have mocked the data for a teacher account (Username: ivy.sejal@gmail.com, Password: Sejal) and a student account (Username: suman.sharma@gmail.com, Password: suman) for easier evaluation
 
 ![alt text](images/landing.png "Attendance Manager")
